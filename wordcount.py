@@ -1,26 +1,49 @@
 import sys
+from collections import Counter
 
-def word_count(filename):
 
-    file = open(sys.argv[1])
 
-    counter = {}
 
-    for line in file:
-        line = line.rstrip()
-        words = line.split(" ")
+# def word_count(fnames):
 
-        for word in words:
-            counter[word] = counter.get(word, 0) + 1
+#     counter = {}
+#     for fname in fnames:
+#         file = open(fname)
 
-    return counter
+#         for line in file:
+#             line = line.rstrip()
+#             words = line.split(" ")
+
+#             for word in words:
+#                 counter[word] = counter.get(word, 0) + 1
+
+#     return counter
+
+def word_count(fnames):
+
+    files = [open(fname) for fname in fnames]
+
+    all_words = []
+
+    for file in files:
+
+        for line in file:
+            line = line.rstrip()
+            words = line.split(" ")
+
+            words = [word.strip("'\",.!/?-#$%^&();:_").lower() for word in words]
+
+            all_words += words
+
+    return Counter(all_words)
+
 
 def display_word_count(counter):
 
     for word, count in counter.items():
-        # print (word, count)
-        print (f"{word}: {count}")
+        print (word, count)
+        # print (f"{word} {count}")
 
 # print(word_count(sys.argv))
-print(display_word_count(word_count(sys.argv)))
+print(display_word_count(word_count(sys.argv[1:])))
 
